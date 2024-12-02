@@ -136,65 +136,66 @@ $user_id = $_SESSION['user_id'];
     // Assuming the user ID is stored in the session as `user_id`
     $user_id = $_SESSION['user_id'];
 
-    // Function to fetch bookings based on the table, status type, and user ID
-    function fetchBookings($conn, $tableName, $status, $user_id)
-    {
-        if ($tableName == 'appointments') {
-            $query = "
-            SELECT a.appointment_date, a.appointment_time, a.payment_method, a.total_price, GROUP_CONCAT(bs.service_id) AS service_ids, a.id
-            FROM appointments a
-            LEFT JOIN booked_services bs ON a.id = bs.appointment_id
-            WHERE a.status = '$status' AND a.user_id = '$user_id'
-            GROUP BY a.id
-        ";
-        } elseif ($tableName == 'approved_bookings') {
-            $query = "
-            SELECT b.appointment_date, b.appointment_time, b.payment_method, b.total_price, ab.service_names, b.id
-            FROM approved_bookings ab
-            JOIN appointments b ON b.id = ab.appointment_id
-            WHERE b.user_id = '$user_id'
-        ";
-        } elseif ($tableName == 'complete_bookings' || $tableName == 'no_show_bookings' || $tableName == 'cancelled_bookings') {
-            $query = "
-            SELECT b.appointment_date, b.appointment_time, b.payment_method, b.total_price, c.service_names
-            FROM $tableName c
-            JOIN appointments b ON b.id = c.appointment_id
-            WHERE b.user_id = '$user_id'
-        ";
-        } else {
-            $query = "SELECT * FROM $tableName";
-        }
+// Function to fetch bookings based on the table, status type, and user ID
+function fetchBookings($conn, $tableName, $status, $user_id)
+{
+    if ($tableName == 'appointments') {
+        $query = "
+        SELECT a.appointment_date, a.appointment_time, a.payment_method, a.total_price, GROUP_CONCAT(bs.service_id) AS service_ids, a.id
+        FROM appointments a
+        LEFT JOIN booked_services bs ON a.id = bs.appointment_id
+        WHERE a.status = '$status' AND a.user_id = '$user_id'
+        GROUP BY a.id
+    ";
+    } elseif ($tableName == 'approved_bookings') {
+        $query = "
+        SELECT b.appointment_date, b.appointment_time, b.payment_method, b.total_price, ab.service_names, b.id
+        FROM approved_bookings ab
+        JOIN appointments b ON b.id = ab.appointment_id
+        WHERE b.user_id = '$user_id'
+    ";
+    } elseif ($tableName == 'complete_bookings' || $tableName == 'no_show_bookings' || $tableName == 'cancelled_bookings') {
+        $query = "
+        SELECT b.appointment_date, b.appointment_time, b.payment_method, b.total_price, c.service_names
+        FROM $tableName c
+        JOIN appointments b ON b.id = c.appointment_id
+        WHERE b.user_id = '$user_id'
+    ";
+    } else {
+        $query = "SELECT * FROM $tableName";
+    }
 
-        $result = $conn->query($query);
+    $result = $conn->query($query);
 
-        if ($result) {
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $serviceNames = isset($row['service_names']) ? $row['service_names'] : $row['service_ids'];
-                    echo '<div class="booking-card">';
-                    echo '    <div class="card-header">';
-                    echo '        <span class="date">' . htmlspecialchars($row['appointment_date']) . '</span>';
-                    echo '        <span class="time">' . htmlspecialchars($row['appointment_time']) . '</span>';
-                    echo '    </div>';
-                    echo '    <div class="card-details">';
-                    echo '        <p><strong>Service:</strong> ' . htmlspecialchars($serviceNames) . '</p>';
-                    echo '        <p><strong>Price:</strong> ₱' . number_format($row['total_price'], 2) . '</p>';
-                    echo '        <p><strong>Payment:</strong> ' . htmlspecialchars($row['payment_method']) . '</p>';
-                    echo '    </div>';
-                    echo '    <div class="status-label ' . strtolower($status) . '">' . ucfirst($status) . '</div>';
-                    if($status === 'pending') {
-                        echo '    <div class="cancel cancel-button" name="cancel-button" onclick="cancelBooking(' . htmlspecialchars($row['id']) . ')">Cancel</div>';
-                    }
-                    
-                    echo '</div>';
+    if ($result) {
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $serviceNames = isset($row['service_names']) ? $row['service_names'] : $row['service_ids'];
+                echo '<div class="booking-card">';
+                echo '    <div class="card-header">';
+                echo '        <span class="date">' . htmlspecialchars($row['appointment_date']) . '</span>';
+                echo '        <span class="time">' . htmlspecialchars($row['appointment_time']) . '</span>';
+                echo '    </div>';
+                echo '    <div class="card-details">';
+                echo '        <p><strong>Service:</strong> ' . htmlspecialchars($serviceNames) . '</p>';
+                echo '        <p><strong>Price:</strong> ₱' . number_format($row['total_price'], 2) . '</p>';
+                echo '        <p><strong>Payment:</strong> ' . htmlspecialchars($row['payment_method']) . '</p>';
+                echo '    </div>';
+                echo '    <div class="status-label ' . strtolower($status) . '">' . ucfirst($status) . '</div>';
+                if ($status === 'pending') {
+                    echo '    <div class="cancel cancel-button" name="cancel-button" onclick="cancelPendingBooking(' . htmlspecialchars($row['id']) . ')">Cancel</div>';
+                } elseif ($status === 'approved') {
+                    echo '    <div class="cancel cancel-button" name="cancel-button" onclick="showCancelModal(' . htmlspecialchars($row['id']) . ')">Cancel</div>';
                 }
-            } else {
-                echo '<p class="no-booking-message">No ' . strtolower($status) . ' bookings found.</p>';
+                echo '</div>';
             }
         } else {
-            echo "<p class='error-message'>Error executing query: " . $conn->error . "</p>";
+            echo '<p class="no-booking-message">No ' . strtolower($status) . ' bookings found.</p>';
         }
+    } else {
+        echo "<p class='error-message'>Error executing query: " . $conn->error . "</p>";
     }
+}
     ?>
 
     <div class="container">
@@ -256,6 +257,28 @@ $user_id = $_SESSION['user_id'];
         </div>
     </div>
 
+<!-- Cancel Reason Modal -->
+<div class="modal fade" id="cancelReasonModal" tabindex="-1" aria-labelledby="cancelReasonModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelReasonModalLabel">Cancel Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="cancelReason" class="form-label">Reason for Cancellation</label>
+                    <textarea class="form-control" id="cancelReason" rows="3" placeholder="Please provide a reason for cancellation..."></textarea>
+                </div>
+                <input type="hidden" id="cancelAppointmentId">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitCancelReason()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
     <script>
         function showSection(sectionId) {
             const sections = document.querySelectorAll('.booking-section');
@@ -289,35 +312,38 @@ $user_id = $_SESSION['user_id'];
             const sidebar = document.getElementById('sidebar');
             sidebar.style.display = sidebar.style.display === 'block' ? 'none' : 'block';
         }
-        
-        function cancelBooking(appointmentId) {
-        if (confirm("Are you sure you want to cancel this booking?")) {
-            // Send an AJAX request to cancel the booking
+    
+        function showCancelModal(appointmentId) {
+            window.location.href = 'cancel_reason.php?id=' + appointmentId;
+        }
+    
+        function cancelPendingBooking(appointmentId) {
             fetch("../booking/process/cancel_booking_process.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ id: appointmentId }),
+                body: JSON.stringify({ id: appointmentId, reason: "" }),
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        alert("Booking canceled successfully!");
-                        location.reload(); // Refresh the page to update the bookings list
-                    } else {
-                        alert("Failed to cancel booking: " + data.error);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                    alert("An error occurred while canceling the booking.");
-                });
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    alert("Booking has been cancelled.");
+                    redirectToHistory();
+                } else {
+                    alert("Failed to cancel booking: " + data.error);
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                alert("An error occurred while canceling the booking.");
+            });
         }
-    }
-
+    
+        function redirectToHistory() {
+            window.location.href = 'history.php';
+        }
     </script>
-
     <script>
         document.getElementById('date').setAttribute('min', new Date().toISOString().split('T')[0]);
     </script>

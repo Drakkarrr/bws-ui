@@ -2,8 +2,6 @@
 session_start();
 include '../../bws_ui/db_connection/db_connection.php'; // Include your database connection
 include '../../bws_ui/includes/header.php'; // Include your header file
-
-
 ?>
 
 <!DOCTYPE html>
@@ -12,13 +10,12 @@ include '../../bws_ui/includes/header.php'; // Include your header file
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Approved Bookings</title>
+    <title>Cancelled Bookings</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="../booking//booking style//booking_style.css">
-
 </head>
 
 <body>
@@ -160,16 +157,18 @@ include '../../bws_ui/includes/header.php'; // Include your header file
                             <th>Appointment Time</th>
                             <th>Payment Method</th>
                             <th>Total Price</th>
+                            <th>Reason</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         // Fetch only cancelled bookings
-                        $sql = "SELECT appointment_id, full_name, service_names, appointment_date, appointment_time, payment_method, total_price, 'cancelled' AS status 
-                            FROM cancelled_bookings";
+                        $sql = "SELECT appointment_id, full_name, service_names, appointment_date, appointment_time, payment_method, total_price, reason, 'cancelled' AS status 
+                                FROM cancelled_bookings
+                                ORDER BY cancelled_at DESC";
                         $result = $conn->query($sql);
-
+                    
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>";
@@ -179,10 +178,8 @@ include '../../bws_ui/includes/header.php'; // Include your header file
                                 echo "<td>" . htmlspecialchars($row['appointment_time']) . "</td>";
                                 echo "<td>" . ucfirst(htmlspecialchars($row['payment_method'])) . "</td>";
                                 echo "<td>₱" . number_format($row['total_price'], 2) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['reason']) . "</td>";
                                 echo "<td>" . htmlspecialchars($row['status']) . "</td>";
-                                echo "<td>"
-                                    // Rebook Button
-                                    . "</td>";
                                 echo "</tr>";
                             }
                         } else {
@@ -194,10 +191,6 @@ include '../../bws_ui/includes/header.php'; // Include your header file
             </div>
         </div>
     </div>
-
-
-
-
 
     <?php $conn->close(); ?>
 
@@ -218,7 +211,7 @@ include '../../bws_ui/includes/header.php'; // Include your header file
         }
 
         $(document).ready(function() {
-            $('#approvedBookingsTable').DataTable({
+            $('#cancelledBookingsTable').DataTable({
                 responsive: true,
                 "autoWidth": false,
                 "language": {
@@ -228,23 +221,10 @@ include '../../bws_ui/includes/header.php'; // Include your header file
                     }
                 }
             });
-
-
-
         });
     </script>
-
-
-
-
-
-
 </body>
-
 </html>
-
-
-
 
 <style>
     #sidebar {
@@ -277,6 +257,5 @@ include '../../bws_ui/includes/header.php'; // Include your header file
         display: block;
     }
 </style>
-
 
 <?php include '../../bws_ui/includes/footer.php' ?>

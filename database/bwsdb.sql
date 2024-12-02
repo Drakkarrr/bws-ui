@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2024 at 05:48 PM
+-- Generation Time: Dec 01, 2024 at 06:35 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,6 +34,8 @@ CREATE TABLE `appointments` (
   `appointment_time` time NOT NULL,
   `payment_method` enum('walk-in','gcash') NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
+  `duration` time NOT NULL,
+  `service_price` double NOT NULL,
   `status` enum('pending','confirmed','completed','cancelled') DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -43,18 +45,28 @@ CREATE TABLE `appointments` (
 -- Dumping data for table `appointments`
 --
 
-INSERT INTO `appointments` (`id`, `user_id`, `appointment_date`, `appointment_time`, `payment_method`, `total_price`, `status`, `created_at`, `updated_at`) VALUES
-(51, 48, '2024-11-12', '13:25:00', 'walk-in', 350.00, 'cancelled', '2024-11-12 05:20:57', '2024-11-12 05:30:54'),
-(52, 39, '2024-11-30', '06:47:00', 'walk-in', 1340.00, 'cancelled', '2024-11-12 20:46:41', '2024-11-12 20:49:44'),
-(53, 39, '2024-11-13', '06:40:00', 'walk-in', 3600.00, '', '2024-11-12 22:40:38', '2024-11-12 22:41:21'),
-(54, 39, '2024-11-13', '00:12:00', 'walk-in', 1000.00, '', '2024-11-12 23:06:48', '2024-11-12 23:08:14'),
-(55, 58, '2024-11-26', '10:00:00', 'walk-in', 640.00, '', '2024-11-26 13:18:11', '2024-11-26 15:43:05'),
-(56, 39, '2024-11-27', '08:30:00', 'walk-in', 140.00, 'pending', '2024-11-27 04:13:15', '2024-11-27 04:13:15'),
-(57, 39, '2024-11-27', '09:30:00', 'walk-in', 140.00, 'pending', '2024-11-27 04:13:50', '2024-11-27 04:13:50'),
-(58, 39, '2024-11-27', '08:33:00', 'walk-in', 140.00, 'pending', '2024-11-27 04:27:58', '2024-11-27 04:27:58'),
-(59, 39, '2024-11-27', '08:30:00', 'walk-in', 140.00, 'pending', '2024-11-27 04:37:51', '2024-11-27 04:37:51'),
-(60, 39, '2024-11-27', '08:30:00', 'walk-in', 140.00, 'pending', '2024-11-27 04:40:38', '2024-11-27 04:40:38'),
-(61, 39, '2024-11-27', '08:25:00', 'walk-in', 1300.00, 'pending', '2024-11-27 04:45:02', '2024-11-27 04:45:02');
+INSERT INTO `appointments` (`id`, `user_id`, `appointment_date`, `appointment_time`, `payment_method`, `total_price`, `duration`, `service_price`, `status`, `created_at`, `updated_at`) VALUES
+(51, 48, '2024-11-12', '13:25:00', 'walk-in', 350.00, '00:00:00', 0, '', '2024-11-12 05:20:57', '2024-12-01 17:14:27'),
+(52, 39, '2024-11-30', '06:47:00', 'walk-in', 1340.00, '00:00:00', 0, '', '2024-11-12 20:46:41', '2024-12-01 10:08:06'),
+(53, 39, '2024-11-13', '06:40:00', 'walk-in', 3600.00, '00:00:00', 0, '', '2024-11-12 22:40:38', '2024-11-12 22:41:21'),
+(54, 39, '2024-11-13', '00:12:00', 'walk-in', 1000.00, '00:00:00', 0, '', '2024-11-12 23:06:48', '2024-11-12 23:08:14'),
+(55, 58, '2024-11-26', '10:00:00', 'walk-in', 640.00, '00:00:00', 0, '', '2024-11-26 13:18:11', '2024-11-26 15:43:05'),
+(56, 39, '2024-11-27', '08:30:00', 'walk-in', 140.00, '00:00:00', 0, 'cancelled', '2024-11-27 04:13:15', '2024-12-01 15:50:43'),
+(57, 39, '2024-11-27', '09:30:00', 'walk-in', 140.00, '00:00:00', 0, 'cancelled', '2024-11-27 04:13:50', '2024-12-01 16:53:15'),
+(58, 39, '2024-11-27', '08:33:00', 'walk-in', 140.00, '00:00:00', 0, '', '2024-11-27 04:27:58', '2024-12-01 08:14:32'),
+(59, 39, '2024-11-27', '08:30:00', 'walk-in', 140.00, '00:00:00', 0, '', '2024-11-27 04:37:51', '2024-12-01 08:37:16'),
+(60, 39, '2024-11-27', '08:30:00', 'walk-in', 140.00, '00:00:00', 0, '', '2024-11-27 04:40:38', '2024-12-01 08:39:55'),
+(61, 39, '2024-11-27', '08:25:00', 'walk-in', 1300.00, '00:00:00', 0, 'cancelled', '2024-11-27 04:45:02', '2024-12-01 16:47:51'),
+(62, 39, '2024-12-10', '09:40:00', 'walk-in', 200.00, '00:00:30', 0, '', '2024-12-01 07:43:02', '2024-12-01 10:01:46'),
+(63, 39, '2024-12-14', '11:39:00', 'walk-in', 300.00, '00:00:30', 0, 'cancelled', '2024-12-01 15:39:40', '2024-12-01 15:41:30'),
+(64, 39, '2024-12-02', '11:41:00', 'walk-in', 200.00, '00:00:30', 0, 'cancelled', '2024-12-01 15:41:55', '2024-12-01 16:38:39'),
+(65, 39, '2024-12-28', '11:30:00', 'walk-in', 600.00, '00:00:30', 0, 'cancelled', '2024-12-01 17:01:11', '2024-12-01 17:01:46'),
+(66, 39, '2024-12-23', '11:30:00', 'walk-in', 500.00, '00:00:30', 0, 'cancelled', '2024-12-01 17:02:28', '2024-12-01 17:08:30'),
+(67, 39, '2024-12-31', '11:30:00', 'walk-in', 500.00, '00:00:30', 0, '', '2024-12-01 17:08:01', '2024-12-01 17:08:12'),
+(68, 39, '2024-12-30', '11:30:00', 'walk-in', 300.00, '00:00:30', 0, 'cancelled', '2024-12-01 17:14:01', '2024-12-01 17:17:36'),
+(69, 39, '2024-12-21', '08:30:00', 'walk-in', 1200.00, '00:00:30', 0, 'cancelled', '2024-12-01 17:15:24', '2024-12-01 17:15:33'),
+(70, 39, '2024-12-14', '13:00:00', 'walk-in', 600.00, '00:00:30', 0, 'cancelled', '2024-12-01 17:24:25', '2024-12-01 17:24:56'),
+(71, 39, '2024-12-18', '11:30:00', 'walk-in', 350.00, '00:00:30', 0, 'cancelled', '2024-12-01 17:30:13', '2024-12-01 17:30:56');
 
 --
 -- Triggers `appointments`
@@ -87,15 +99,9 @@ CREATE TABLE `approved_bookings` (
   `appointment_time` time NOT NULL,
   `payment_method` varchar(50) DEFAULT NULL,
   `total_price` decimal(10,2) NOT NULL,
+  `service_price` double NOT NULL,
   `approved_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `approved_bookings`
---
-
-INSERT INTO `approved_bookings` (`id`, `appointment_id`, `user_id`, `full_name`, `service_names`, `appointment_date`, `appointment_time`, `payment_method`, `total_price`, `approved_at`) VALUES
-(24, 55, 58, 'John 0', 'Head and Back Massage, Ventusa', '2024-11-26', '10:00:00', 'walk-in', 640.00, '2024-11-26 15:43:05');
 
 -- --------------------------------------------------------
 
@@ -130,13 +136,24 @@ INSERT INTO `booked_services` (`id`, `appointment_id`, `service_id`, `price`) VA
 (82, 60, 158, 200.00),
 (83, 61, 165, 350.00),
 (84, 61, 169, 600.00),
-(85, 61, 171, 350.00);
+(85, 61, 171, 350.00),
+(86, 62, 158, 200.00),
+(87, 63, 159, 300.00),
+(88, 64, 158, 200.00),
+(89, 65, 161, 600.00),
+(90, 66, 163, 500.00),
+(91, 67, 162, 500.00),
+(92, 68, 164, 300.00),
+(93, 69, 170, 1200.00),
+(94, 70, 169, 600.00),
+(95, 71, 166, 350.00);
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `cancelled_bookings`
 --
+
 
 CREATE TABLE `cancelled_bookings` (
   `appointment_id` int(11) NOT NULL,
@@ -146,21 +163,17 @@ CREATE TABLE `cancelled_bookings` (
   `appointment_time` time NOT NULL,
   `payment_method` varchar(50) NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
+  `reason` varchar(200) DEFAULT NULL,
   `cancelled_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `cancelled_bookings`
---
+INSERT INTO `cancelled_bookings` (`appointment_id`, `full_name`, `service_names`, `appointment_date`, `appointment_time`, `payment_method`, `total_price`, `reason`, `cancelled_at`) VALUES
+(1, 'John Doe', 'Haircut, Shave', '2024-11-25', '10:30:00', 'Credit Card', 50.00, 'Personal reasons', '2024-11-24 09:00:00'),
+(2, 'Jane Smith', 'Manicure, Pedicure', '2024-11-26', '14:00:00', 'Cash', 75.00, 'Schedule conflict', '2024-11-25 12:00:00'),
+(3, 'Alice Johnson', 'Massage', '2024-11-27', '16:00:00', 'Debit Card', 100.00, 'Feeling unwell', '2024-11-26 15:00:00'),
+(4, 'Bob Brown', 'Facial', '2024-11-28', '11:00:00', 'Credit Card', 60.00, 'Changed mind', '2024-11-27 10:00:00'),
+(5, 'Charlie Davis', 'Haircut', '2024-11-29', '09:00:00', 'Online Payment', 40.00, 'Emergency', '2024-11-28 08:00:00');
 
-INSERT INTO `cancelled_bookings` (`appointment_id`, `full_name`, `service_names`, `appointment_date`, `appointment_time`, `payment_method`, `total_price`, `cancelled_at`) VALUES
-(60, 'Karen 0', 'Foot Spa with pedicure and manicure', '2024-11-09', '22:11:00', 'walk-in', 450.00, '2024-11-09 18:12:25'),
-(61, 'Karen 0', 'Foot Massage, Hot Stone With Massage', '2024-11-09', '21:17:00', 'walk-in', 800.00, '2024-11-09 18:21:40'),
-(63, 'Karen 0', 'Ventusa, Foot Spa with pedicure and manicure, Foot Spa with  Foot Massage', '2024-11-19', '23:09:00', 'walk-in', 1400.00, '2024-11-10 11:20:16'),
-(23, 'Vivian Bulahan', 'Hot Stone With Massage', '2024-11-09', '18:11:00', 'walk-in', 500.00, '2024-11-11 12:11:44'),
-(41, 'Vivian Bulahan', 'Armpit Hair Removal, Arm Hair Remova( per Session)', '2024-11-11', '13:53:00', 'walk-in', 1700.00, '2024-11-11 13:48:57'),
-(51, 'Gendel Empeynado', 'Foot Spa  with Pedicure', '2024-11-12', '13:25:00', 'walk-in', 350.00, '2024-11-12 13:30:54'),
-(52, 'Vivian Bulahan', 'Avana Facial , Hot Stone With Massage', '2024-11-30', '06:47:00', 'walk-in', 1340.00, '2024-11-13 04:49:44');
 
 -- --------------------------------------------------------
 
@@ -178,19 +191,6 @@ CREATE TABLE `complete_bookings` (
   `total_price` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `complete_bookings`
---
-
-INSERT INTO `complete_bookings` (`appointment_id`, `full_name`, `service_names`, `appointment_date`, `appointment_time`, `payment_method`, `total_price`) VALUES
-(59, 'Karen 0', 'Combi (Swedish and shitsu)', '2024-12-04', '22:04:00', '0', 450.00),
-(32, 'Vivian Bulahan', 'Foot Spa  with Pedicure, Foot Spa  with Manicure', '2024-11-12', '16:14:00', '0', 700.00),
-(33, 'Vivian Bulahan', 'Foot Massage, Ventusa, Foot Spa with pedicure and manicure', '2024-11-11', '16:11:00', '0', 1250.00),
-(43, 'Chad Christian  0', 'Hot Stone With Massage', '2024-11-11', '23:44:00', '0', 500.00),
-(42, 'Vivian Bulahan', 'Ventusa, Foot Spa with pedicure and manicure, Avana Facial ', '2024-11-12', '19:05:00', '0', 2150.00),
-(44, 'Chad Christian  0', 'Ventusa, Foot Spa  with Pedicure, Foot Spa with pedicure and manicure, Foot Spa with  Foot Massage', '2024-11-11', '22:50:00', '0', 1750.00),
-(53, 'Vivian Bulahan', 'Armpit Hair Removal, RF(Radio  Frequency  Per Session)', '2024-11-13', '06:40:00', '0', 3600.00);
-
 -- --------------------------------------------------------
 
 --
@@ -206,6 +206,13 @@ CREATE TABLE `discounts` (
   `end_time` datetime NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `discounts`
+--
+
+INSERT INTO `discounts` (`id`, `service_id`, `discount_percentage`, `discounted_price`, `start_time`, `end_time`, `user_id`) VALUES
+(60, 170, 30, 840.00, '2024-12-02 01:33:00', '2024-12-02 01:36:00', 39);
 
 -- --------------------------------------------------------
 
@@ -283,43 +290,43 @@ CREATE TABLE `services` (
 --
 
 INSERT INTO `services` (`id`, `name`, `description`, `price`, `category_id`, `image`, `status`, `slots`) VALUES
-(158, 'Head and Back Massage', 'Enjoy a rejuvenating 30-minute head and back massage designed to relieve tension and promote relaxation. Our skilled therapists focus on easing muscle stiffness, improving circulation, and soothing stress, leaving you refreshed and revitalized.', 200.00, 70, 'head back.webp', 'Not Available', 0),
-(159, 'Foot Massage', 'Experience a soothing 30-minute foot massage that targets pressure points to relieve tiredness, improve circulation, and reduce stress. Our expert therapists provide a relaxing treatment to restore balance and leave your feet feeling refreshed and revitalized', 300.00, 72, 'foot.jpg', 'Available', 0),
-(161, 'Dry Massage', 'Enjoy a 30-minute dry massage, a therapeutic treatment performed without oils or lotions. Focusing on deep pressure and stretching techniques, this massage helps relieve muscle tension, improve circulation, and promote overall relaxation and flexibility.', 600.00, 70, 'dry massaGE.jpg', 'Available', 0),
-(162, 'Hot Stone With Massage', 'Indulge in a 30-minute hot stone massage, where smooth, heated stones are placed on key points of the body to melt away tension. Combined with soothing massage techniques, this treatment promotes deep relaxation, improves circulation, and eases muscle stiffness, leaving you feeling restored and rejuvenated.', 500.00, 70, 'hot stone.jpg', 'Available', 0),
-(163, 'Ventusa', 'Experience a 30-minute Ventusa therapy, a traditional treatment using heated cups to create suction on the skin. This therapy helps improve blood flow, reduce muscle tension, and detoxify the body, leaving you feeling relaxed and revitalized.', 500.00, 70, 'Ventusa.jpg', 'Available', 0),
-(164, 'Foot Spa', 'Treat your feet to a 30-minute foot spa, designed to cleanse, exfoliate, and rejuvenate tired feet. This relaxing treatment includes a soothing soak, gentle scrub, and massage, leaving your feet feeling soft, refreshed, and revitalized.', 300.00, 72, 'foot spa.avif', 'Available', 0),
-(165, 'Foot Spa  with Manicure', 'Pamper yourself with a 30-minute foot spa and manicure combo. This treatment includes a soothing foot soak, exfoliation, and massage, followed by a professional manicure to shape and polish your nails, leaving your feet and hands feeling soft, refreshed, and beautifully groomed.', 350.00, 72, 'Express+Pedicure.jpg', 'Available', 0),
-(166, 'Foot Spa  with Pedicure', 'Indulge in a 30-minute foot spa with pedicure, starting with a relaxing foot soak, exfoliation, and massage to refresh tired feet. Followed by expert nail care, shaping, and polishing, this treatment leaves your feet soft, smooth, and perfectly groomed.', 350.00, 72, 'bigstock-Female-feet-at-spa-pedicure-pr-98440622.jpg', 'Available', 0),
-(167, 'Foot Spa with pedicure and manicure', 'Enjoy a luxurious 30-minute foot spa that includes both a pedicure and manicure. Begin with a relaxing foot soak, exfoliation, and massage to refresh your feet, followed by expert nail care for both hands and feet, complete with shaping, buffing, and polishing, leaving you feeling pampered and perfectly groomed.', 450.00, 72, 'spa-treatment-product-female-feet-hand-spa-scaled.jpg', 'Available', 0),
-(168, 'Foot Spa with  Foot Massage', 'Delight in a 30-minute foot spa experience paired with a soothing foot massage. This treatment begins with a relaxing foot soak and gentle exfoliation, followed by a therapeutic massage that targets pressure points to relieve tension and enhance circulation. Your feet will feel revitalized, refreshed, and deeply pampered', 450.00, 72, 'best-foot-spa.webp', 'Available', 0),
-(169, 'Foot Spa with Pedicure + Manicure + Foot Massage ', 'Treat yourself to a luxurious experience that combines a foot spa with a pedicure, manicure, and foot massage. Start with a relaxing foot soak and gentle exfoliation, followed by a soothing foot massage to relieve tension. Enjoy expert nail care for both hands and feet, including shaping, buffing, and polishing. Leave feeling completely pampered, with soft, beautiful feet and hands.', 600.00, 72, 'Express+Pedicure.jpg', 'Available', 0),
-(170, 'Avana Facial ', 'Revitalize your skin with the Avana Facial, featuring a deep cleanse, gentle exfoliation, and a soothing massage, topped off with a customized mask. This treatment promotes hydration and leaves your skin glowing and refreshed.', 1200.00, 71, 'avana-face-fresh-natural-paper.png', 'Available', 0),
-(171, 'Regular Facial', 'Refresh your complexion with a Regular Facial that includes a deep cleanse, gentle exfoliation, and a hydrating mask. This treatment revitalizes your skin, leaving it smooth, balanced, and glowing', 350.00, 71, 'Dollarphotoclub_85186489-800x533-e1457061860266.jpg', 'Available', 0),
-(172, 'Diamond peel Face', 'Experience the rejuvenating effects of a Diamond Peel Facial, which uses microdermabrasion to gently exfoliate the skin. This treatment removes dead skin cells, promotes cell renewal, and reveals a brighter, smoother complexion, leaving your skin looking youthful and radiant', 600.00, 71, 'Diamond-Peel-The-Derm-Spa-Stansbury-Park-UT.jpeg', 'Available', 0),
-(173, 'Diamond peel Nick', 'Revitalize your skin with a Diamond Peel Neck treatment, designed to exfoliate and rejuvenate the delicate neck area. Using microdermabrasion techniques, this treatment removes dead skin cells and promotes a smoother, more radiant appearance, helping to reduce signs of aging and leaving your neck looking refreshed and youthful', 500.00, 71, 'diamond-peel.jpg', 'Available', 0),
-(174, 'Galvanic + Lesser', 'Experience the benefits of a Galvanic Facial combined with a Lesser treatment. This innovative approach uses galvanic currents to enhance product penetration, stimulate collagen production, and improve skin texture. Ideal for addressing fine lines and wrinkles, this treatment leaves your skin looking firmer, smoother, and more youthful.', 400.00, 71, 'DSC_3867-2048x1367.jpg', 'Available', 0),
-(175, 'Hydra Facial with Regular mask', 'Revitalize your skin with a Hydra Facial featuring a regular mask. This treatment deeply cleanses, exfoliates, and hydrates, leaving your complexion fresh, smooth, and glowing.', 499.00, 71, 'facial service.jpg', 'Available', 0),
-(176, 'Hydra Facial with Diamond Peel', 'Refresh your skin with a Hydra Facial combined with a Diamond Peel. This treatment cleanses, exfoliates, and hydrates, revealing a brighter, smoother complexion.', 800.00, 71, 'Hc01e44fc79ed4de7a683fcef8d99cf10p.avif', 'Available', 0),
-(177, 'Vampire Facial Per Session', 'Experience the rejuvenating Vampire Facial, which uses your own platelet-rich plasma (PRP) to promote collagen production and skin renewal. This innovative treatment enhances skin texture, reduces fine lines, and leaves your complexion looking youthful and revitalized.', 2500.00, 71, 'maxresdefault.jpg', 'Available', 0),
-(178, 'Pollogen Facial Oxygenio', 'Revitalize your skin with the Pollogen Oxygenio Facial, a cutting-edge treatment that combines oxygenation and radiofrequency technology. This facial deeply cleanses, hydrates, and stimulates collagen production, leaving your skin refreshed, smooth, and glowing.', 2500.00, 71, 'maxresdefault.jpg', 'Available', 0),
-(179, 'Warts  Removal', 'Safely eliminate warts with our professional Warts Removal treatment. Utilizing advanced techniques, this procedure effectively removes warts while minimizing discomfort, leaving your skin clear and smooth', 699.00, 71, 'wart-removal-1.jpg', 'Available', 0),
-(180, 'Milia Removal', 'Experience effective Milia Removal, a gentle treatment designed to eliminate those small, stubborn white bumps on the skin. Our skilled professionals use safe techniques to ensure smooth, clear skin without scarring', 350.00, 71, 'Milia-Removal.jpg', 'Available', 0),
-(181, 'Cold Hammer', 'Enjoy the soothing benefits of the Cold Hammer treatment, designed to calm and rejuvenate the skin. This technique uses cold therapy to reduce inflammation, minimize redness, and tighten pores, leaving your complexion refreshed and revitalized.', 100.00, 74, 'Hot-Cold-Hammer-Image.jpg', 'Available', 0),
-(182, 'Ultrasonic', 'Experience the Ultrasonic treatment, which utilizes high-frequency sound waves to deeply cleanse and exfoliate the skin. This non-invasive procedure removes dead skin cells, unclogs pores, and stimulates collagen production, resulting in a smoother, healthier complexion', 350.00, 74, 'Ultrasonic-Facial-San-Antonio.jpg', 'Available', 0),
-(183, 'RF(Radio  Frequency)', '\"Experience RF (Radio Frequency) therapy, a non-invasive treatment that stimulates collagen production and tightens the skin. This procedure improves elasticity, reduces wrinkles, and promotes a youthful appearance, leaving your skin firmer and rejuvenated.', 150.00, 74, 'young-woman-receiving-electric-rf-lifting-facial-massage-at-beauty-spa-with-electroporation-equipment-2EA3WGY.jpg', 'Available', 0),
-(184, 'RF(Radio  Frequency  Per Session)', '\"Experience RF (Radio Frequency) therapy, a non-invasive treatment that stimulates collagen production and tightens the skin. This procedure improves elasticity, reduces wrinkles, and promotes a youthful appearance, leaving your skin firmer and rejuvenated.\"', 2600.00, 74, 'young-woman-receiving-electric-rf-lifting-facial-massage-at-beauty-spa-with-electroporation-equipment-2EA3WGY.jpg', 'Available', 0),
-(185, 'Oxygen Infusion', 'Revitalize your skin with Oxygen Infusion, a luxurious treatment that delivers oxygen and nourishing serums directly into the skin. This non-invasive procedure hydrates, brightens, and rejuvenates your complexion, leaving you with a refreshed, glowing appearance', 350.00, 74, 'oxygen-facial.jpg', 'Available', 0),
-(186, 'Carbon  Lesser', 'Experience Carbon Lesser treatment, which combines carbon gel and laser technology to deeply cleanse and exfoliate, targeting impurities and enhancing skin texture for a clear, smooth complexion.\"', 1500.00, 74, 'sdbotox_carbon_laser_facial_01.jpg', 'Available', 0),
-(187, 'Led Mask', '\"Revitalize your skin with a LED Mask treatment that uses light therapy to promote healing and reduce inflammation, leaving your complexion radiant and refreshed.\"', 200.00, 74, 'light-therapy-mask.webp', 'Available', 0),
-(188, 'Gluta with Vitamin C', '\"Brighten your skin with the Gluta and Vitamin C treatment, combining glutathione and vitamin C for a radiant, even complexion.\"', 1500.00, 73, 'medworld-clinic-Glutathione-IV-Therapy.jpg', 'Available', 0),
-(189, 'Gluta with  Multivitamins', 'Revitalize your skin with the Gluta with Multivitamins treatment, combining glutathione and essential vitamins to brighten and nourish for a healthy, glowing complexion.', 1800.00, 73, 'Gluta-Tabs-1.webp', 'Available', 0),
-(190, 'Gluta with  Multivitamins Plus Vitamin C and Anti Aging collagen', '\"Revitalize your skin with Gluta, Multivitamins, Vitamin C, and Anti-Aging Collagen for a brighter, nourished, and youthful complexion.\"', 2000.00, 73, 'Gluta-Tabs-1.webp', 'Available', 0),
-(191, 'Multi Vitamins', 'Boost your skin’s health with a Multivitamin treatment, delivering essential nutrients for a radiant and revitalized complexion.', 1000.00, 73, 'Gluta-Tabs-1.webp', 'Available', 0),
-(192, 'Armpit Hair Removal', '\"Achieve smooth, hair-free underarms with our Armpit Hair Removal treatment, providing a safe and effective solution for long-lasting results.\"', 1000.00, 75, 'Benefits-of-Laser-Hair-Removal-for-Underarm.jpg', 'Available', 0),
-(193, 'Tattoo Removal (Per Session)', '\"Remove unwanted tattoos effectively with our Tattoo Removal treatment, offered per session for gradual and safe fading.\"', 600.00, 75, 'shutterstock_1092072329-scaled.webp', 'Available', 0),
-(194, 'Mustached  Hair Removal( Per Session)', '\"Achieve smooth results with our Mustache Hair Removal treatment, offered per session for effective and lasting hair removal.\"', 500.00, 75, 'male-depilation-laser-hair-removal-beard-mustache-procedure-treatment-salon-health-beauty-concept-male-depilation-laser-131342235.webp', 'Available', 0),
-(196, 'Legs Hair removal (per Session)', '\"Experience smooth, hair-free legs with our Legs Hair Removal treatment, offered per session for effective and lasting results.\"', 1500.00, 75, 'woman-spa-getting-leg-waxed-hair-removal-young-legs-34447089.webp', 'Available', 0);
+(158, 'Head and Back Massage', 'Enjoy a rejuvenating 30-minute head and back massage designed to relieve tension and promote relaxation. Our skilled therapists focus on easing muscle stiffness, improving circulation, and soothing stress, leaving you refreshed and revitalized.', 200.00, 70, 'head back.webp', 'Not Available', 1),
+(159, 'Foot Massage', 'Experience a soothing 30-minute foot massage that targets pressure points to relieve tiredness, improve circulation, and reduce stress. Our expert therapists provide a relaxing treatment to restore balance and leave your feet feeling refreshed and revitalized', 300.00, 72, 'foot.jpg', 'Not Available', 1),
+(161, 'Dry Massage', 'Enjoy a 30-minute dry massage, a therapeutic treatment performed without oils or lotions. Focusing on deep pressure and stretching techniques, this massage helps relieve muscle tension, improve circulation, and promote overall relaxation and flexibility.', 600.00, 70, 'dry massaGE.jpg', 'Not Available', 0),
+(162, 'Hot Stone With Massage', 'Indulge in a 30-minute hot stone massage, where smooth, heated stones are placed on key points of the body to melt away tension. Combined with soothing massage techniques, this treatment promotes deep relaxation, improves circulation, and eases muscle stiffness, leaving you feeling restored and rejuvenated.', 500.00, 70, 'hot stone.jpg', 'Not Available', 0),
+(163, 'Ventusa', 'Experience a 30-minute Ventusa therapy, a traditional treatment using heated cups to create suction on the skin. This therapy helps improve blood flow, reduce muscle tension, and detoxify the body, leaving you feeling relaxed and revitalized.', 500.00, 70, 'Ventusa.jpg', 'Not Available', 0),
+(164, 'Foot Spa', 'Treat your feet to a 30-minute foot spa, designed to cleanse, exfoliate, and rejuvenate tired feet. This relaxing treatment includes a soothing soak, gentle scrub, and massage, leaving your feet feeling soft, refreshed, and revitalized.', 300.00, 72, 'foot spa.avif', 'Not Available', 0),
+(165, 'Foot Spa  with Manicure', 'Pamper yourself with a 30-minute foot spa and manicure combo. This treatment includes a soothing foot soak, exfoliation, and massage, followed by a professional manicure to shape and polish your nails, leaving your feet and hands feeling soft, refreshed, and beautifully groomed.', 350.00, 72, 'Express+Pedicure.jpg', 'Available', 1),
+(166, 'Foot Spa  with Pedicure', 'Indulge in a 30-minute foot spa with pedicure, starting with a relaxing foot soak, exfoliation, and massage to refresh tired feet. Followed by expert nail care, shaping, and polishing, this treatment leaves your feet soft, smooth, and perfectly groomed.', 350.00, 72, 'bigstock-Female-feet-at-spa-pedicure-pr-98440622.jpg', 'Not Available', 0),
+(167, 'Foot Spa with pedicure and manicure', 'Enjoy a luxurious 30-minute foot spa that includes both a pedicure and manicure. Begin with a relaxing foot soak, exfoliation, and massage to refresh your feet, followed by expert nail care for both hands and feet, complete with shaping, buffing, and polishing, leaving you feeling pampered and perfectly groomed.', 450.00, 72, 'spa-treatment-product-female-feet-hand-spa-scaled.jpg', 'Available', 1),
+(168, 'Foot Spa with  Foot Massage', 'Delight in a 30-minute foot spa experience paired with a soothing foot massage. This treatment begins with a relaxing foot soak and gentle exfoliation, followed by a therapeutic massage that targets pressure points to relieve tension and enhance circulation. Your feet will feel revitalized, refreshed, and deeply pampered', 450.00, 72, 'best-foot-spa.webp', 'Available', 1),
+(169, 'Foot Spa with Pedicure + Manicure + Foot Massage ', 'Treat yourself to a luxurious experience that combines a foot spa with a pedicure, manicure, and foot massage. Start with a relaxing foot soak and gentle exfoliation, followed by a soothing foot massage to relieve tension. Enjoy expert nail care for both hands and feet, including shaping, buffing, and polishing. Leave feeling completely pampered, with soft, beautiful feet and hands.', 600.00, 72, 'Express+Pedicure.jpg', 'Not Available', 0),
+(170, 'Avana Facial ', 'Revitalize your skin with the Avana Facial, featuring a deep cleanse, gentle exfoliation, and a soothing massage, topped off with a customized mask. This treatment promotes hydration and leaves your skin glowing and refreshed.', 1200.00, 71, 'avana-face-fresh-natural-paper.png', 'Not Available', 0),
+(171, 'Regular Facial', 'Refresh your complexion with a Regular Facial that includes a deep cleanse, gentle exfoliation, and a hydrating mask. This treatment revitalizes your skin, leaving it smooth, balanced, and glowing', 350.00, 71, 'Dollarphotoclub_85186489-800x533-e1457061860266.jpg', 'Available', 1),
+(172, 'Diamond peel Face', 'Experience the rejuvenating effects of a Diamond Peel Facial, which uses microdermabrasion to gently exfoliate the skin. This treatment removes dead skin cells, promotes cell renewal, and reveals a brighter, smoother complexion, leaving your skin looking youthful and radiant', 600.00, 71, 'Diamond-Peel-The-Derm-Spa-Stansbury-Park-UT.jpeg', 'Available', 1),
+(173, 'Diamond peel Nick', 'Revitalize your skin with a Diamond Peel Neck treatment, designed to exfoliate and rejuvenate the delicate neck area. Using microdermabrasion techniques, this treatment removes dead skin cells and promotes a smoother, more radiant appearance, helping to reduce signs of aging and leaving your neck looking refreshed and youthful', 500.00, 71, 'diamond-peel.jpg', 'Available', 1),
+(174, 'Galvanic + Lesser', 'Experience the benefits of a Galvanic Facial combined with a Lesser treatment. This innovative approach uses galvanic currents to enhance product penetration, stimulate collagen production, and improve skin texture. Ideal for addressing fine lines and wrinkles, this treatment leaves your skin looking firmer, smoother, and more youthful.', 400.00, 71, 'DSC_3867-2048x1367.jpg', 'Available', 1),
+(175, 'Hydra Facial with Regular mask', 'Revitalize your skin with a Hydra Facial featuring a regular mask. This treatment deeply cleanses, exfoliates, and hydrates, leaving your complexion fresh, smooth, and glowing.', 499.00, 71, 'facial service.jpg', 'Available', 1),
+(176, 'Hydra Facial with Diamond Peel', 'Refresh your skin with a Hydra Facial combined with a Diamond Peel. This treatment cleanses, exfoliates, and hydrates, revealing a brighter, smoother complexion.', 800.00, 71, 'Hc01e44fc79ed4de7a683fcef8d99cf10p.avif', 'Available', 1),
+(177, 'Vampire Facial Per Session', 'Experience the rejuvenating Vampire Facial, which uses your own platelet-rich plasma (PRP) to promote collagen production and skin renewal. This innovative treatment enhances skin texture, reduces fine lines, and leaves your complexion looking youthful and revitalized.', 2500.00, 71, 'maxresdefault.jpg', 'Available', 1),
+(178, 'Pollogen Facial Oxygenio', 'Revitalize your skin with the Pollogen Oxygenio Facial, a cutting-edge treatment that combines oxygenation and radiofrequency technology. This facial deeply cleanses, hydrates, and stimulates collagen production, leaving your skin refreshed, smooth, and glowing.', 2500.00, 71, 'maxresdefault.jpg', 'Available', 1),
+(179, 'Warts  Removal', 'Safely eliminate warts with our professional Warts Removal treatment. Utilizing advanced techniques, this procedure effectively removes warts while minimizing discomfort, leaving your skin clear and smooth', 699.00, 71, 'wart-removal-1.jpg', 'Available', 1),
+(180, 'Milia Removal', 'Experience effective Milia Removal, a gentle treatment designed to eliminate those small, stubborn white bumps on the skin. Our skilled professionals use safe techniques to ensure smooth, clear skin without scarring', 350.00, 71, 'Milia-Removal.jpg', 'Available', 1),
+(181, 'Cold Hammer', 'Enjoy the soothing benefits of the Cold Hammer treatment, designed to calm and rejuvenate the skin. This technique uses cold therapy to reduce inflammation, minimize redness, and tighten pores, leaving your complexion refreshed and revitalized.', 100.00, 74, 'Hot-Cold-Hammer-Image.jpg', 'Available', 1),
+(182, 'Ultrasonic', 'Experience the Ultrasonic treatment, which utilizes high-frequency sound waves to deeply cleanse and exfoliate the skin. This non-invasive procedure removes dead skin cells, unclogs pores, and stimulates collagen production, resulting in a smoother, healthier complexion', 350.00, 74, 'Ultrasonic-Facial-San-Antonio.jpg', 'Available', 1),
+(183, 'RF(Radio  Frequency)', '\"Experience RF (Radio Frequency) therapy, a non-invasive treatment that stimulates collagen production and tightens the skin. This procedure improves elasticity, reduces wrinkles, and promotes a youthful appearance, leaving your skin firmer and rejuvenated.', 150.00, 74, 'young-woman-receiving-electric-rf-lifting-facial-massage-at-beauty-spa-with-electroporation-equipment-2EA3WGY.jpg', 'Available', 1),
+(184, 'RF(Radio  Frequency  Per Session)', '\"Experience RF (Radio Frequency) therapy, a non-invasive treatment that stimulates collagen production and tightens the skin. This procedure improves elasticity, reduces wrinkles, and promotes a youthful appearance, leaving your skin firmer and rejuvenated.\"', 2600.00, 74, 'young-woman-receiving-electric-rf-lifting-facial-massage-at-beauty-spa-with-electroporation-equipment-2EA3WGY.jpg', 'Available', 1),
+(185, 'Oxygen Infusion', 'Revitalize your skin with Oxygen Infusion, a luxurious treatment that delivers oxygen and nourishing serums directly into the skin. This non-invasive procedure hydrates, brightens, and rejuvenates your complexion, leaving you with a refreshed, glowing appearance', 350.00, 74, 'oxygen-facial.jpg', 'Available', 1),
+(186, 'Carbon  Lesser', 'Experience Carbon Lesser treatment, which combines carbon gel and laser technology to deeply cleanse and exfoliate, targeting impurities and enhancing skin texture for a clear, smooth complexion.\"', 1500.00, 74, 'sdbotox_carbon_laser_facial_01.jpg', 'Available', 1),
+(187, 'Led Mask', '\"Revitalize your skin with a LED Mask treatment that uses light therapy to promote healing and reduce inflammation, leaving your complexion radiant and refreshed.\"', 200.00, 74, 'light-therapy-mask.webp', 'Available', 1),
+(188, 'Gluta with Vitamin C', '\"Brighten your skin with the Gluta and Vitamin C treatment, combining glutathione and vitamin C for a radiant, even complexion.\"', 1500.00, 73, 'medworld-clinic-Glutathione-IV-Therapy.jpg', 'Available', 1),
+(189, 'Gluta with  Multivitamins', 'Revitalize your skin with the Gluta with Multivitamins treatment, combining glutathione and essential vitamins to brighten and nourish for a healthy, glowing complexion.', 1800.00, 73, 'Gluta-Tabs-1.webp', 'Available', 1),
+(190, 'Gluta with  Multivitamins Plus Vitamin C and Anti Aging collagen', '\"Revitalize your skin with Gluta, Multivitamins, Vitamin C, and Anti-Aging Collagen for a brighter, nourished, and youthful complexion.\"', 2000.00, 73, 'Gluta-Tabs-1.webp', 'Available', 1),
+(191, 'Multi Vitamins', 'Boost your skin’s health with a Multivitamin treatment, delivering essential nutrients for a radiant and revitalized complexion.', 1000.00, 73, 'Gluta-Tabs-1.webp', 'Available', 1),
+(192, 'Armpit Hair Removal', '\"Achieve smooth, hair-free underarms with our Armpit Hair Removal treatment, providing a safe and effective solution for long-lasting results.\"', 1000.00, 75, 'Benefits-of-Laser-Hair-Removal-for-Underarm.jpg', 'Available', 1),
+(193, 'Tattoo Removal (Per Session)', '\"Remove unwanted tattoos effectively with our Tattoo Removal treatment, offered per session for gradual and safe fading.\"', 600.00, 75, 'shutterstock_1092072329-scaled.webp', 'Available', 1),
+(194, 'Mustached  Hair Removal( Per Session)', '\"Achieve smooth results with our Mustache Hair Removal treatment, offered per session for effective and lasting hair removal.\"', 500.00, 75, 'male-depilation-laser-hair-removal-beard-mustache-procedure-treatment-salon-health-beauty-concept-male-depilation-laser-131342235.webp', 'Available', 1),
+(196, 'Legs Hair removal (per Session)', '\"Experience smooth, hair-free legs with our Legs Hair Removal treatment, offered per session for effective and lasting results.\"', 1500.00, 75, 'woman-spa-getting-leg-waxed-hair-removal-young-legs-34447089.webp', 'Available', 1);
 
 -- --------------------------------------------------------
 
@@ -570,25 +577,25 @@ ALTER TABLE `tbl_users`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `approved_bookings`
 --
 ALTER TABLE `approved_bookings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `booked_services`
 --
 ALTER TABLE `booked_services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 
 --
 -- AUTO_INCREMENT for table `discounts`
 --
 ALTER TABLE `discounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `products`
