@@ -1,33 +1,4 @@
-
-admin Secrete key: 
-5AwQmZFoCWDHcj-KR0lFJ6cL7RSXd-VsMh03IKQK6-4
-
-
-semaphore Api:
-ed49311fb8620f4e674df7cd10181e95
-
-recapcha api client side:
-6LelZVIqAAAAAD0O_gpXUuHKgyFJzyS2Prdh-_Vf
-
-recapcha serverside:
-6LelZVIqAAAAAA2kWlGngEL9kIHjuS2j7wVsuYEw
-
-
-
-
-
-CREATE TABLE IF NOT EXISTS tbl_booking (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    service_id INT NOT NULL,
-    category_id INT NOT NULL,  -- Reference to the service category if needed
-    booking_date DATE NOT NULL,
-    booking_time TIME NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES tbl_users(user_id),
-    FOREIGN KEY (service_id) REFERENCES services(id),
-    FOREIGN KEY (category_id) REFERENCES service_categories(id)
-);
+BWS )
 
 
 
